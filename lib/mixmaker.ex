@@ -1,4 +1,4 @@
-alias Converge.{DirectoryPresent, FilePresent, All, Context, Runner, TerminalReporter}
+alias Converge.{DirectoryPresent, FilePresent, All, Context, Runner, SilentReporter}
 
 defmodule Mixmaker do
 	def create_project(path, application_name, module_name, deps) do
@@ -77,7 +77,7 @@ defmodule Mixmaker do
 				"""
 			},
 		]
-		ctx = %Context{run_meet: true, reporter: TerminalReporter.new()}
+		ctx = %Context{run_meet: true, reporter: SilentReporter.new()}
 		Runner.converge(%All{units: units}, ctx)
 	end
 end
