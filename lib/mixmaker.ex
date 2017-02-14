@@ -1,4 +1,5 @@
 alias Converge.{DirectoryPresent, FilePresent, All, Context, Runner, SilentReporter}
+alias Gears.TableFormatter
 
 defmodule Mixmaker do
 	def create_project(path, application_name, module_name, deps) do
@@ -81,17 +82,25 @@ defmodule Mixmaker do
 		Runner.converge(%All{units: units}, ctx)
 	end
 
+	# This atrocious code is designed to table-format the deps in the deps function like so:
+	# {:somedep,  ">= 0.1.0"}
+	# {:otherdep, "1.0.0"}
 	defp deps_string(deps) do
 		case deps do
 			[] -> "[]"
 			_  -> 
-				s = deps
-					|> Enum.map(fn dep -> inspect(dep, pretty: false, limit: -1) end)
-					|> Enum.map(fn s   -> "\t\t\t#{s}," end)
-					|> Enum.intersperse("\n")
+				table = deps
+					|> Enum.map(fn dep ->
+							parts = dep
+								|> Tuple.to_list
+								|> Enum.map(fn part -> inspect(part, pretty: false, limit: -1) end)
+							middle = Enum.drop(tl(parts), -1)
+							["\t\t\t{#{hd(parts)}," | Enum.map(middle, &("#{&1},"))] ++ ["#{List.last(parts)}}"]
+						end)
+					|> TableFormatter.format
 				"""
 				\t\t[
-				#{s}
+				#{table}
 				\t\t]
 				"""
 		end
