@@ -48,7 +48,7 @@ defmodule Mixmaker do
 					end
 
 					defp deps do
-						#{deps}
+				#{deps_string(deps)}
 					end
 				end
 				"""
@@ -79,5 +79,21 @@ defmodule Mixmaker do
 		]
 		ctx = %Context{run_meet: true, reporter: SilentReporter.new()}
 		Runner.converge(%All{units: units}, ctx)
+	end
+
+	defp deps_string(deps) do
+		case deps do
+			[] -> "[]"
+			_  -> 
+				s = deps
+					|> Enum.map(fn dep -> inspect(dep, pretty: false, limit: -1) end)
+					|> Enum.map(fn s   -> "\t\t\t#{s}," end)
+					|> Enum.intersperse("\n")
+				"""
+				\t\t[
+				#{s}
+				\t\t]
+				"""
+		end
 	end
 end
