@@ -2,7 +2,12 @@ alias Converge.{DirectoryPresent, FilePresent, All, Context, Runner, SilentRepor
 alias Gears.TableFormatter
 
 defmodule Mixmaker do
-	def create_project(path, application_name, module_name, deps) do
+	def create_project(path, application_name, module_name, deps, escript \\ nil) do
+		escript_extra = case escript do
+			nil -> ""
+			_   -> "\n\t\t\tescript: #{inspect escript}"
+		end
+
 		units = [
 			%DirectoryPresent{path: path,                      mode: 0o750},
 			%DirectoryPresent{path: Path.join(path, "config"), mode: 0o750},
@@ -41,7 +46,7 @@ defmodule Mixmaker do
 						[
 							app:             :#{application_name},
 							version:         "0.1.0",
-							elixir:          "~> 1.4",
+							elixir:          "~> 1.4",#{escript_extra}
 							build_embedded:  Mix.env == :prod,
 							start_permanent: Mix.env == :prod,
 							deps:            deps()
