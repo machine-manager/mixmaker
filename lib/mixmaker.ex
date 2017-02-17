@@ -100,13 +100,12 @@ defmodule Mixmaker do
 								|> Tuple.to_list
 								|> Enum.map(fn part -> inspect(part, pretty: false, limit: -1) end)
 							middle = Enum.drop(tl(parts), -1)
-							["\t\t\t{#{hd(parts)}," | Enum.map(middle, &("#{&1},"))] ++ ["#{List.last(parts)}}"]
+							["\t\t\t{#{hd(parts)}," | Enum.map(middle, &("#{&1},"))] ++ ["#{List.last(parts)}},"]
 						end)
 					|> TableFormatter.format
 				"""
 				\t\t[
-				#{table}
-				\t\t]
+				#{table}\t\t]
 				"""
 		end
 	end
