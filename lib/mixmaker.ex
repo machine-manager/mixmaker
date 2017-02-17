@@ -5,7 +5,7 @@ defmodule Mixmaker do
 	def create_project(path, application_name, module, deps, escript \\ nil) do
 		escript_extra = case escript do
 			nil -> ""
-			_   -> "\n\t\t\tescript: #{inspect escript}"
+			_   -> "\n\t\t\tescript: #{inspect escript},"
 		end
 
 		units = [
