@@ -2,7 +2,7 @@ alias Converge.{DirectoryPresent, FilePresent, All, Context, Runner, SilentRepor
 alias Gears.TableFormatter
 
 defmodule Mixmaker do
-	def create_project(path, application_name, module_name, deps, escript \\ nil) do
+	def create_project(path, application_name, module, deps, escript \\ nil) do
 		escript_extra = case escript do
 			nil -> ""
 			_   -> "\n\t\t\tescript: #{inspect escript}"
@@ -39,7 +39,7 @@ defmodule Mixmaker do
 			},
 			%FilePresent{path: Path.join(path, "mix.exs"), mode: 0o640, content:
 				"""
-				defmodule #{module_name}.Mixfile do
+				defmodule #{inspect module}.Mixfile do
 					use Mix.Project
 
 					def project do
@@ -66,14 +66,14 @@ defmodule Mixmaker do
 			},
 			%FilePresent{path: Path.join([path, "test", "#{application_name}_test.exs"]), mode: 0o640, content:
 				"""
-				defmodule #{module_name}Test do
+				defmodule #{inspect module}Test do
 					use ExUnit.Case
 				end
 				"""
 			},
 			%FilePresent{path: Path.join([path, "lib", "#{application_name}.ex"]), mode: 0o640, content:
 				"""
-				defmodule #{module_name} do
+				defmodule #{inspect module} do
 				end
 				"""
 			},
