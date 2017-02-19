@@ -92,7 +92,10 @@ defmodule Mixmaker do
 	# {:otherdep, "1.0.0"}
 	defp deps_string(deps) do
 		case deps do
-			[] -> "[]"
+			[] ->
+				"""
+				\t\t[]\
+				"""
 			_  -> 
 				table = deps
 					|> Enum.map(fn dep ->
@@ -105,7 +108,7 @@ defmodule Mixmaker do
 					|> TableFormatter.format
 				"""
 				\t\t[
-				#{table}\t\t]
+				#{table}\t\t]\
 				"""
 		end
 	end
