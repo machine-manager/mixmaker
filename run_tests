@@ -4,5 +4,5 @@
 
 set -eu -o pipefail
 
-MIX_ENV=test  mix          deps.compile
-HEX_OFFLINE=1 unjailed-mix test --no-elixir-version-check --no-deps-check --no-archives-check --trace "$@"
+MIX_ENV=test  mix deps.compile
+HEX_OFFLINE=1 mix test --no-elixir-version-check --no-deps-check --no-archives-check --trace "$@"
